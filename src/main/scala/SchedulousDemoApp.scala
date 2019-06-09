@@ -4,8 +4,8 @@ import Readers._
 
 object SchedulousDemoApp extends App {
   // paths
-  val volPath = "/home/xujie/projects/schedulous/data/avail.csv"
-  val evtPath = "/home/xujie/projects/schedulous/data/events.csv"
+  val volPath = "dropbox/pldi-sv/avail.csv"
+  val evtPath = "dropbox/pldi-sv/events.csv"
 
   // constraint config
   val MAXSLOTS  = 5
@@ -36,12 +36,12 @@ object SchedulousDemoApp extends App {
 
     List(
       c1,
-      c2,
+      //c2,
       //c3,
       //c4,
 
       c5,
-      //c6,
+      c6,
       c7
     )
   }
