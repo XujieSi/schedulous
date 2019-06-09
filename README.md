@@ -1,19 +1,14 @@
-# schedulous
-Schedule workers to timeslots with ease.
-
-# purpose
-
 Schedulous is intended to make scheduling easier.  You provide a set of available workers and a set of timeslots to Schedulous (both in CSV format), along with a set of constraints you want met, and Schedulous finds a schedule for you.
 
 # prerequisites
 
 You will need the following software installed:
 
-1. Scala 
-2. SBT 
-3. Z3 (no need to rebuild as long as the command 'z3' is available)
+1. [Scala](https://www.scala-lang.org/) 
+2. [SBT](https://www.scala-sbt.org/) 
+3. [Z3](https://github.com/Z3Prover/z3/releases) (no need to rebuild as long as the command `z3` is available)
 
-# how to use it
+# how to use
 
 After you have installed the above prerequisites, you will need to create two CSVs.
 
@@ -24,9 +19,7 @@ After you have installed the above prerequisites, you will need to create two CS
 5. Run your program (e.g. `sbt run`).
 
 
-# how it works & constraints
-
-Schedulous is built on top of the Z3 constraint solver.  Constraints are implemented in a simple SMTLIB DSL written in Scala.  You can find a set of sample constraints in the `src/main/scala/Constraints` folder.  You can add constraints by implementing [this](https://github.com/dbarowy/schedulous/blob/master/src/main/scala/Constraints/Constraint.scala) trait and then by adding them to your Schedulous configuration.
+# features
 
 The set of currently available constraints are:
 
