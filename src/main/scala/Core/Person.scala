@@ -1,13 +1,26 @@
 package Core
 
-case class Person(fname: String, lname: String, availability: Availability) {
+case class Person(fname: String, lname: String, availability: Availability, local: Boolean) {
   def availableFor(dateslot: Dateslot) : Boolean = {
-    availability.schedule.foldLeft(false){ case (avail,(start,end)) =>
+    if (local && dateslot.isTooEarly()) {
+      println(dateslot + " is too early for " + fname + " " + lname)
+      false
+    }
+    else{
+     availability.schedule.foldLeft(false){ case (avail,(start,end)) =>
       val slotStartsBefore = dateslot.start.isBefore(start)
       val slotEndsAfter = dateslot.end.isAfter(end)
-
         avail || (!slotStartsBefore && !slotEndsAfter)
     }
+
+//     availability.schedule.foldLeft(true){ case (avail,(start,end)) =>
+//      val slotStartsBefore = dateslot.end.isBefore(start)
+//      val slotEndsAfter = dateslot.start.isAfter(end)
+//        avail && (slotStartsBefore || slotEndsAfter)
+//    }
+
+    }
+
   }
 
   def canonicalName: String = (fname + lname).replaceAll("[^a-zA-Z]", "")

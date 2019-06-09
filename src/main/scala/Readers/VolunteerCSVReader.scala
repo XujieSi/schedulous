@@ -11,12 +11,12 @@ case class VolunteerCSVReader(filename: String) {
   private val raw: List[Map[String, String]] = reader.allWithHeaders()
 
   private def availability(row: Map[String,String], tentativeMeansAvailable: Boolean) : Availability = {
-    val sun = "Available Sun 6/12"    -> Availability.AllDay(2016, Month.JUNE, 12)
-    val mon = "Available Mon 6/13"    -> Availability.AllDay(2016, Month.JUNE, 13)
-    val tue = "Available Tue 6/14"    -> Availability.AllDay(2016, Month.JUNE, 14)
-    val wed = "Available Wed 6/15"    -> Availability.AllDay(2016, Month.JUNE, 15)
-    val thu = "Available Thurs 6/16"  -> Availability.AllDay(2016, Month.JUNE, 16)
-    val fri = "Available Fri 6/17"    -> Availability.AllDay(2016, Month.JUNE, 17)
+    val sun = "Available Sun 6/17"    -> Availability.AllDay(2018, Month.JUNE, 17)
+    val mon = "Available Mon 6/18"    -> Availability.AllDay(2018, Month.JUNE, 18)
+    val tue = "Available Tue 6/19"    -> Availability.AllDay(2018, Month.JUNE, 19)
+    val wed = "Available Wed 6/20"    -> Availability.AllDay(2018, Month.JUNE, 20)
+    val thu = "Available Thurs 6/21"  -> Availability.AllDay(2018, Month.JUNE, 21)
+    val fri = "Available Fri 6/22"    -> Availability.AllDay(2018, Month.JUNE, 22)
 
     val days = List(sun, mon, tue, wed, thu, fri)
 
@@ -38,9 +38,10 @@ case class VolunteerCSVReader(filename: String) {
 
         Some(
           Person(
-            row("First name"),
-            row("Last name"),
-            avail
+            row("First Name"),
+            row("Last Name"),
+            avail,
+            row("Location") == "L"
           )
         )
       } else {

@@ -107,6 +107,17 @@ case class Schedule(assignments: Seq[Assignment]) {
         m + (a.person -> (a :: m(a.person)))
     }
 
+  def agg: Map[String, List[Person]] = {
+    assignments.foldLeft ( assignments.map {a => a.task_desc() -> List[Person]() }.toMap ) {
+      case (m, a) =>
+        //println()
+        //println("assignment: " + a)
+        //println("mp: " + m)
+        val task : String = a.task_desc()
+        m + (task -> (a.person :: m(task)) )
+    }
+  }
+
   override def toString: String = {
     Assignment.header + "\n" +
     assignments
@@ -155,18 +166,18 @@ case class Schedule(assignments: Seq[Assignment]) {
     }
   }
 
-  def workloadFor(p: Person, approval: Approval) : Double =
+  def workloadFor(p: Person, approval: Approval) : Int =
     if (pLookup.contains(p)) {
-      pLookup(p).foldLeft(0.0) {
+      pLookup(p).foldLeft(0) {
         case (acc, a) =>
           if (a.approval == approval) {
-            acc + a.slot.duration.toMinutes
+            acc + a.slot.duration.toMinutes.toInt
           } else {
             acc
           }
       }
     } else {
-      0.0
+      0
     }
 
   def merge(s: Schedule) : Schedule = {

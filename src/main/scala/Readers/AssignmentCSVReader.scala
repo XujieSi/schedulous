@@ -72,6 +72,9 @@ case class AssignmentCSVReader(filename: String) {
       val person: Person =
         if (row("person").nonEmpty) {
           try {
+            println("#sv: " + people.size)
+            //people.foreach(println)
+            //println("canonical name:" + p.canonicalName)
             people.find { p => p.canonicalName == row("person") }.get
           } catch {
             case e:Exception =>
@@ -113,7 +116,7 @@ case class AssignmentCSVReader(filename: String) {
   def assignments(people: Set[Person]): (Schedule,Schedule) = {
     val rowsByDay: Map[String, List[Map[String, String]]] = raw.groupBy(row => row("date"))
 
-    val defaultPerson = Person("Jane", "Doe", Availability.NotAvailable)
+    val defaultPerson = Person("Kyle", "Xujie", Availability.NotAvailable, true)
 
     val assns: List[Assignment] = rowsByDay.flatMap { case (datestring, rows) => assignmentsFromRows(datestring, rows, people, defaultPerson) }.toList
 

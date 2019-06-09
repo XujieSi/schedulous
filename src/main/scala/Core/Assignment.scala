@@ -17,6 +17,12 @@ case class Assignment(id: UUID, slotname: SSymbol, slot: Dateslot, person: Perso
   def reject() : Assignment = Assignment(id, slotname, slot, person, Rejected)
   def undecided() : Assignment = this
 
+  def task_desc(): String =
+    ""  + slot.start.toString().replace('T',' ') +
+    "\t" + slot.end.toString().replace('T',' ') +
+    "\t" + slot.getDuration() +
+    "\t" + slot.prettyname
+
   override def toString: String =
     "\"" + slot.start +
     "\",\"" + slot.end +

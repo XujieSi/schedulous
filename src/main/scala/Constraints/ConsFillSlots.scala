@@ -21,6 +21,8 @@ case class ConsFillSlots(peoplemap: People#PeopleMap, slotmap: Timeslots#SlotMap
           )
         )
       } else {
+        println("person:" + person + " is not available for slot: " + ds)
+        //println("bad, get else branch")
         None
       }
     }.toSeq
@@ -53,6 +55,8 @@ case class ConsFillSlots(peoplemap: People#PeopleMap, slotmap: Timeslots#SlotMap
   }
 
   private def init() : List[Assert] = {
+    println("ConsFillSlots::init(), slotmap: " + slotmap)
+
     val ass: List[Assert] =
       slotmap.flatMap { case (slot: SSymbol, ds: Dateslot) =>
         val literals: Seq[Term] = oldSchedule match {
@@ -63,9 +67,12 @@ case class ConsFillSlots(peoplemap: People#PeopleMap, slotmap: Timeslots#SlotMap
               case None => literalsNoAssignment(slot, ds)
             }
           case None =>
+            println("here, call literalsNoAssignment")
             // no old schedule, just use availability
             literalsNoAssignment(slot, ds)
         }
+
+        println("ConsFillSlots::init(),  literals: " + literals)
 
         if (literals.size >= 2) {
           // Or requires at least 2 arguments

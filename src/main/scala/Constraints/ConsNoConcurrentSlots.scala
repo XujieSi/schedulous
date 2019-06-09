@@ -29,9 +29,11 @@ case class ConsNoConcurrentSlots(peoplemap: People#PeopleMap, slotmap: Timeslots
     val arg_person = SortedVar(SSymbol("person"), IntSort())
 
     if (overlaps.nonEmpty) {
+      // DEBUG:
+      // println("overlaps: " + overlaps)
+      // BUG: smtlib.And will crash if the number constraints is less than two
       // person should not be assigned to both t1 and t2
-      val expr: Term =
-        And(overlaps.map { case (t1,t2) =>
+      val and_cons = overlaps.map { case (t1,t2) =>
           Not(
             And(
               Equals(
@@ -44,7 +46,12 @@ case class ConsNoConcurrentSlots(peoplemap: People#PeopleMap, slotmap: Timeslots
               )
             )
           )
-        })
+        }
+      val and_cons2 = and_cons :+ (True() : smtlib.parser.Terms.Term)
+      //println("and_cons: ", and_cons2)
+
+      val expr: Term =
+        And( and_cons2 )
 
       val assertions = peoplemap.map { case (person,_) =>
         Assert(

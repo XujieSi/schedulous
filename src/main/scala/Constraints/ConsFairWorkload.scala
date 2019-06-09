@@ -12,18 +12,20 @@ import smtlib.theories.Reals.{DecimalLit, RealSort}
 case class ConsFairWorkload(minute_epsilon: Int, workloadfn: SSymbol, peoplemap: People#PeopleMap, slotmap: Timeslots#SlotMap) extends Constraint {
   val (fname,fdef,assertions) = init()
 
-  private def wlExpr(person: Int, fair_workload: Double, arg_epsilon: SortedVar) : Term = {
+  private def wlExpr(person: Int, fair_workload: Int, arg_epsilon: SortedVar) : Term = {
     And(
-      GreaterEquals(
-        FunctionApplication(
-          QualifiedIdentifier(SimpleIdentifier(workloadfn)),
-          Seq(NumeralLit(person))
-        ),
-        Sub(
-          DecimalLit(fair_workload),
-          QualifiedIdentifier(SimpleIdentifier(arg_epsilon.name))
-        )
-      ),
+//      GreaterEquals(
+//        FunctionApplication(
+//          QualifiedIdentifier(SimpleIdentifier(workloadfn)),
+//          Seq(NumeralLit(person))
+//        ),
+//        Sub(
+//          //DecimalLit(fair_workload),
+//          NumeralLit(fair_workload),
+//          QualifiedIdentifier(SimpleIdentifier(arg_epsilon.name))
+//        )
+//      ),
+      True(),
       LessEquals(
         FunctionApplication(
           QualifiedIdentifier(SimpleIdentifier(workloadfn)),
@@ -42,11 +44,13 @@ case class ConsFairWorkload(minute_epsilon: Int, workloadfn: SSymbol, peoplemap:
     assert(num_people > 0, "You cannot schedule zero people.")
 
     val fname = SSymbol(this.getClass.getName)
-    val arg_epsilon: SortedVar = SortedVar(SSymbol("epsilon"), RealSort())
+    //val arg_epsilon: SortedVar = SortedVar(SSymbol("epsilon"), RealSort())
+    val arg_epsilon: SortedVar = SortedVar(SSymbol("epsilon"), IntSort())
 
-    val fair_workload: Double = slotmap.map {
-      case (_,slot) => Duration.between(slot.start, slot.end).toMinutes.toDouble
-    }.sum / peoplemap.size
+    //val fair_workload: Double = slotmap.map {
+    val fair_workload: Int = (slotmap.map {
+        case (_,slot) => Duration.between(slot.start, slot.end).toMinutes.toInt
+      }.sum + peoplemap.size-1) / peoplemap.size
 
     val expr : Term =
       if (peoplemap.size > 1) {

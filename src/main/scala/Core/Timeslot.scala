@@ -20,6 +20,15 @@ case class Dateslot(z3name: String, prettyname: String, role: String, start: Loc
   def overlaps(other: Dateslot) : Boolean = {
     dateBetween(this,other) || dateBetween(other, this)
   }
+
+  def isTooEarly() : Boolean = {
+    start.getHour < 8
+  }
+
+  def getDuration() : Int = {
+    (end.getHour() - start.getHour()) * 60 + ( end.getMinute() - start.getMinute())
+  }
+
   private def dateBetween(date: Dateslot, otherdate: Dateslot) : Boolean = {
     (date.start.isEqual(otherdate.start) || date.start.isAfter(otherdate.start)) &&
       date.start.isBefore(otherdate.end)

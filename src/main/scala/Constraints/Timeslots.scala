@@ -23,6 +23,8 @@ class Timeslots(days: Set[Day], slotmap: Map[SSymbol,Dateslot]) extends Constrai
         }
       }.toMap
     )
+        println("days:" + days)
+
   }
 
   val defns =
